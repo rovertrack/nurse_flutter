@@ -1,3 +1,4 @@
+import 'package:first/Routes/Profile/Profile.dart';
 import 'package:first/components/services.dart';
 import 'package:first/pages/home.dart';
 import 'package:first/pages/settings.dart';
@@ -9,12 +10,13 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(systemNavigationBarColor: Colors.white),
   );
-  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
+
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
@@ -43,27 +45,22 @@ class MyApp extends StatelessWidget {
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Color.fromARGB(255, 251, 251, 253),
-        scaffoldBackgroundColor: Color.fromARGB(255, 251, 251, 253),
+        primaryColor: Color(0xffF8FAFC),
+        scaffoldBackgroundColor: Color.fromARGB(255, 247, 251, 255),
         appBarTheme: AppBarTheme(
-          backgroundColor: Color.fromARGB(
-            255,
-            251,
-            251,
-            253,
-          ), // Light grey/white
+          backgroundColor: Color(0xffF8FAFC),
           elevation: 0, // Optional: removes shadow for a flat look
           iconTheme: IconThemeData(color: Colors.black), // Optional: icon color
           titleTextStyle: TextStyle(
             color: Colors.black,
             fontSize: 20,
             fontWeight: FontWeight.w600,
-          ), // Optional: title color
+          ),
         ),
         colorScheme: ColorScheme.light(
-          primary: Colors.white, // Your main accent color (blue)
-          secondary: Colors.cyan, // Accent color for FABs, etc.
-          surface: Colors.white,
+          primary: Color(0xff1AB5BF),
+          secondary: Color(0xff1A2C42),
+          surface: Color(0xffFFFFFF),
           onPrimary: Colors.white, // Text/icon color on primary
           onSecondary: Colors.white,
           onSurface: Colors.black,
@@ -84,19 +81,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Widget> pages = [
-    const Services(),
-    const History(),
-    Center(child: Text('Profile Page')),
-  ];
+  List<Widget> pages = [const Services(), const History(), const Profile()];
 
   int currentpage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-
       body: pages[currentpage],
       // body: Center(
       //   child: Column(
@@ -222,7 +213,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     "Bookings",
                     style: TextStyle(
-                      color: currentpage == 1 ? Colors.cyan : Color(0xff333333),
+                      color:
+                          currentpage == 1 ? Colors.cyan : Color(0xff333333),
                       fontSize: 12,
                     ),
                   ),
@@ -247,7 +239,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     "Profile",
                     style: TextStyle(
-                      color: currentpage == 2 ? Colors.cyan : Color(0xff333333),
+                      color:
+                          currentpage == 2 ? Colors.cyan : Color(0xff333333),
                       fontSize: 12,
                     ),
                   ),

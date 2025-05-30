@@ -1,22 +1,24 @@
 import 'dart:convert';
-import 'dart:math';
-
-import 'package:first/pages/services/choose_time.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<String>> fetchfromserver() async {
-  final box = await Hive.openBox("appcache");
+  Box? box;
+  try {
+    box = await Hive.openBox("appcache");
+  } catch (e) {
+    // If box is corrupted, delete and recreate
+    await Hive.deleteBoxFromDisk("appcache");
+    box = await Hive.openBox("appcache");
+  }
   final response = await http.get(
     Uri.parse("http://159.89.164.129:8000/api/services"),
   );
   if (response.statusCode == 200) {
     final List<dynamic> data = json.decode(response.body);
-    // Extract service names
     final List<String> serviceNames =
         data.map((item) => item['service_name'] as String).toList();
-    // Optionally cache the list
     await box.put('services', serviceNames);
     return serviceNames;
   } else {
@@ -25,9 +27,15 @@ Future<List<String>> fetchfromserver() async {
 }
 
 Future<List<dynamic>> loadServices() async {
-  final box = await Hive.openBox('appcache'); // <-- use "appcache" here
-  // Try to load from cache first
-  List<String>? cached = box.get('services');
+  Box? box;
+  try {
+    box = await Hive.openBox('appcache');
+  } catch (e) {
+    // If box is corrupted, delete and recreate
+    await Hive.deleteBoxFromDisk('appcache');
+    box = await Hive.openBox('appcache');
+  }
+  List<String>? cached = box.get('services')?.cast<String>();
   if (cached != null && cached.isNotEmpty) {
     // Fetch from server in background (don't await)
     fetchfromserver();
@@ -135,10 +143,10 @@ class _InstantbookingState extends State<Instantbooking> {
                                     ? []
                                     : [
                                       BoxShadow(
-                                        color: Colors.grey,
-                                        blurRadius: 3,
-                                        offset: Offset(4, 5),
-                                        spreadRadius: 0.5,
+                                        color: Colors.black12,
+                                        blurRadius: 12,
+                                        offset: Offset(3, 4),
+                                        spreadRadius: -1,
                                       ),
                                     ],
                           ),

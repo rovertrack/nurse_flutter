@@ -40,10 +40,12 @@ class Longtermbooking extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: GestureDetector(
                   onTap:
-                      () => (Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Schedule()),
-                      )),
+                      () => (
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) =>),
+                        // )
+                      ),
                   child: Column(
                     children: [
                       Icon(Icons.local_hospital_rounded, size: 100),

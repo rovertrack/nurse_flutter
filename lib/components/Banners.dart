@@ -21,15 +21,20 @@ class _BannerCarouselState extends State<BannerCarousel> {
               _bannerImages.map((imagePath) {
                 return Builder(
                   builder: (BuildContext context) {
-                    return Card(
-                      elevation: 0.3, // Add shadow to the card
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          15,
-                        ), // Rounded corners
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [BoxShadow(color: Colors.black12,blurStyle: BlurStyle.solid),BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 23,
+                            offset: Offset(2, 1),
+                            spreadRadius: -20,)],
+                        ),
                         child: Image.asset(
                           imagePath,
                           fit: BoxFit.contain,
