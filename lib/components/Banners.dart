@@ -9,7 +9,7 @@ class BannerCarousel extends StatefulWidget {
 class _BannerCarouselState extends State<BannerCarousel> {
   int _currentIndex = 0; // Track the current slide index
   final List<String> _bannerImages = [
-    'assets/icons/pin.png', // Replace with your image paths
+    'images/banner.png', // Replace with your image paths
   ];
 
   @override
@@ -22,21 +22,19 @@ class _BannerCarouselState extends State<BannerCarousel> {
                 return Builder(
                   builder: (BuildContext context) {
                     return Card(
-                      elevation: 4, // Add shadow to the card
+                      elevation: 0.3, // Add shadow to the card
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(
                           15,
                         ), // Rounded corners
                       ),
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(
-                          15,
-                        ), // Clip image to match card corners
+                        borderRadius: BorderRadius.circular(15),
                         child: Image.asset(
                           imagePath,
-                          fit: BoxFit.cover,
-                          width:
-                              double.infinity, // Make the image fill the card
+                          fit: BoxFit.contain,
+                          height: MediaQuery.of(context).size.height * 0.20,
+                          width: MediaQuery.of(context).size.width * 0.95,
                         ),
                       ),
                     );

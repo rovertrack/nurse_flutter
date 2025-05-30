@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
 
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+class History extends StatefulWidget {
+  const History({super.key});
 
+  @override
+  State<History> createState() => _History();
+}
+
+class _History extends State<History> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const Text('You have  pushed  button this many time'),
-          SizedBox(
-            height: 50,
-            width: double.infinity,
-            child: const Text("Press Me"),
-          ),
-        ],
+      appBar: AppBar(title: Text("Services"), elevation: 2),
+      body: Container(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 2, color: Colors.blue),
+                      ),
+                    ),
+                    child: Text("Ongoing/Pending"),
+                  ),
+                  Text("History"),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:first/pages/services/choose_time.dart';
 import 'package:flutter/material.dart';
 
 class Instantbooking extends StatefulWidget {
@@ -45,7 +46,9 @@ class _InstantbookingState extends State<Instantbooking> {
             child: Padding(
               padding: EdgeInsets.all(15.0),
               child: Center(
-                child: Column(
+                child: Wrap(
+                  spacing: 10.0, // Horizontal spacing between cards
+                  runSpacing: 10.0, // Vertical spacing between rows
                   children:
                       services.asMap().entries.map((entry) {
                         int index = entry.key;
@@ -61,18 +64,20 @@ class _InstantbookingState extends State<Instantbooking> {
                             margin: EdgeInsets.symmetric(
                               vertical: 8.0,
                             ), // Add spacing
-                            height: screenWidth * 0.095,
-                            width: screenWidth * 0.85,
+                            height: screenWidth * 0.28,
+                            width:
+                                screenWidth *
+                                0.40, // Adjust width for two cards per row
                             decoration: BoxDecoration(
                               color:
                                   isSelectedList[index]
-                                      ? Colors.blue.withOpacity(
+                                      ? Colors.cyan.withOpacity(
                                         0.2,
                                       ) // Highlight when selected
                                       : Colors
                                           .white, // Default background color
                               borderRadius: BorderRadius.all(
-                                Radius.circular(6),
+                                Radius.circular(15),
                               ),
                               border: Border.all(
                                 color:
@@ -85,22 +90,28 @@ class _InstantbookingState extends State<Instantbooking> {
                                           145,
                                           145,
                                         ), // Default border
-                                width: 1,
+                                width: 0.5,
                               ),
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                service, // Use the service name dynamically
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color:
-                                      isSelectedList[index]
-                                          ? Colors
-                                              .blue // Change text color when selected
-                                          : Colors.black,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Text(
+                                    service, // Use the service name dynamically
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color:
+                                          isSelectedList[index]
+                                              ? Colors
+                                                  .blue // Change text color when selected
+                                              : Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         );
@@ -110,8 +121,11 @@ class _InstantbookingState extends State<Instantbooking> {
             ),
           ),
           TextButton(
-            onPressed: () => (),
-
+            onPressed:
+                () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChooseTime()),
+                ),
             style: TextButton.styleFrom(
               minimumSize: Size(screenWidth * 0.80, 10),
               backgroundColor: Color.fromARGB(255, 51, 85, 206),

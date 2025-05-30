@@ -5,17 +5,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() => runApp(
-  DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => MyApp(), // Wrap your app
-  ),
-);
+void main() async {
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(systemNavigationBarColor: Colors.white),
+  );
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MyApp(), // Wrap your app
+    ),
+  );
+}
 // void main() {
+//   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+//   SystemChrome.setSystemUIOverlayStyle(
+//     SystemUiOverlayStyle(systemNavigationBarColor: Colors.white),
+//   );
 
-//   // runApp(const MyApp());
-//
+//   runApp(const MyApp());
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -24,12 +38,36 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Nurse mate',
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        primaryColor: Color.fromARGB(255, 251, 251, 253),
+        scaffoldBackgroundColor: Color.fromARGB(255, 251, 251, 253),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color.fromARGB(
+            255,
+            251,
+            251,
+            253,
+          ), // Light grey/white
+          elevation: 0, // Optional: removes shadow for a flat look
+          iconTheme: IconThemeData(color: Colors.black), // Optional: icon color
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ), // Optional: title color
+        ),
+        colorScheme: ColorScheme.light(
+          primary: Colors.white, // Your main accent color (blue)
+          secondary: Colors.cyan, // Accent color for FABs, etc.
+          surface: Colors.white,
+          onPrimary: Colors.white, // Text/icon color on primary
+          onSecondary: Colors.white,
+          onSurface: Colors.black,
+        ),
       ),
       home: const MyHomePage(title: 'Nurse mate  '),
     );
@@ -48,7 +86,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<Widget> pages = [
     const Services(),
-    const Settings(),
+    const History(),
     Center(child: Text('Profile Page')),
   ];
 
@@ -57,37 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:
-          false, // Prevent resizing when the keyboard is openF
-      appBar: AppBar(
-        elevation: 1,
-        bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
-          child: Container(
-            color: const Color.fromARGB(255, 241, 241, 241),
-            height: 1.0,
-          ),
-        ),
-        leading: IconButton(
-          onPressed: () => {},
-          icon: Image.asset('assets/icons/pin.png', height: 26, width: 26),
-        ),
-        actions: [
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Image.asset(
-                'assets/icons/notification1.png',
-                height: 22,
-                width: 22,
-              ),
-              onPressed: () => {},
-            ),
-          ),
-          CupertinoButton(child: Icon(Icons.person), onPressed: () => ()),
-        ],
-        title: Text(widget.title),
-      ),
+      resizeToAvoidBottomInset: false,
+
       body: pages[currentpage],
       // body: Center(
       //   child: Column(
@@ -150,7 +159,104 @@ class _MyHomePageState extends State<MyHomePage> {
       //     });
       //   },
       // ),
+      bottomNavigationBar: Container(
+        height: 55,
+        padding: EdgeInsets.fromLTRB(5, 0, 5, 8),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(color: Colors.black12, blurRadius: 2, spreadRadius: 1),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  currentpage = 0;
+                });
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Image.asset(
+                    "images/home.png",
+                    width: 23,
+                    height: 23,
+                    color:
+                        currentpage == 0
+                            ? Color(0xff3E69FE)
+                            : const Color.fromARGB(188, 79, 79, 79),
+                  ),
+                  Text(
+                    "Home",
+                    style: TextStyle(
+                      color:
+                          currentpage == 0
+                              ? Color(0xff3E69FE)
+                              : const Color.fromARGB(188, 79, 79, 79),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  currentpage = 1;
+                });
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.watch_later_outlined,
+                    size: 25,
+                    color: currentpage == 1 ? Colors.cyan : Color(0xff333333),
+                  ),
+                  Text(
+                    "Bookings",
+                    style: TextStyle(
+                      color: currentpage == 1 ? Colors.cyan : Color(0xff333333),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Profile
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  currentpage = 2;
+                });
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.person,
+                    size: 25,
+                    color: currentpage == 2 ? Colors.cyan : Color(0xff333333),
+                  ),
+                  Text(
+                    "Profile",
+                    style: TextStyle(
+                      color: currentpage == 2 ? Colors.cyan : Color(0xff333333),
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
     );
-    // This trailing comma makes auto-formatting nicer for build methods.
   }
 }
