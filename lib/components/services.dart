@@ -43,6 +43,7 @@ class _ServicesState extends State<Services> {
     ];
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         centerTitle: true,
         // bottom: PreferredSize(
         //   preferredSize: Size.fromHeight(1.0),
@@ -74,177 +75,132 @@ class _ServicesState extends State<Services> {
         ],
         // title: Text("Nurse mate", style: TextStyle(fontSize: 20)),
       ),
-      body: SizedBox(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              BannerCarousel(),
-              Row(
-                children: [
-                  SizedBox(
-                    child: Text(
-                      "Services",
-                      textAlign: TextAlign.left,
-                      style: GoogleFonts.poppins(
-                        fontSize: screenWidth * 0.055,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
+      body: SingleChildScrollView(
+        child: SizedBox(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                BannerCarousel(),
+                Text(
+                  "Services",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.poppins(
+                    fontSize: screenWidth * 0.050,
+                    fontWeight: FontWeight.w600,
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-                  //   child: TextButton(
-                  //     onPressed: () => {},
-                  //     style: TextButton.styleFrom(
-                  //       backgroundColor: Color(0xFF3E69FE),
-                  //       padding: EdgeInsets.symmetric(
-                  //         horizontal: 6,
-                  //         vertical: 4,
-                  //       ), // Adjust padding
-                  //       minimumSize: Size(
-                  //         screenWidth * 0.161,
-                  //         screenWidth * 0.027,
-                  //       ), // Set minimum size
-                  //       textStyle: TextStyle(
-                  //         fontSize: 13,
-                  //         fontWeight: FontWeight.w400, // Adjust font size
-                  //       ),
-                  //     ),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       crossAxisAlignment: CrossAxisAlignment.center,
-                  //       children: [
-                  //         Text(
-                  //           "see all",
-                  //           style: GoogleFonts.inter(
-                  //             fontSize: screenWidth * 0.033,
-                  //             color: Colors.white,
-                  //           ),
-                  //         ),
+                ),
+                SizedBox(height: 5),
 
-                  //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
-              SizedBox(height: 5),
-              Text(
-                "Explore",
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-              ),
-              SingleChildScrollView(
-                padding: EdgeInsets.all(0),
-                scrollDirection: Axis.horizontal,
-                child: Instantbooking(
+                Instantbooking(
                   onItemsSelected: (List<String> selectedItems) {
                     setState(() {
                       button = selectedItems.isNotEmpty;
                     });
                   },
                 ),
-              ),
-              SizedBox(height: 10),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children:
-                      services.map((service) {
-                        return GestureDetector(
-                          onTap:
-                              () => (Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Longtermbooking(),
-                                ),
-                              )),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(19),
-                              ),
-                              border: Border.all(
-                                color: const Color.fromARGB(255, 72, 97, 129),
-                                width: 1,
-                              ),
-                            ),
-                            child: Card(
-                              margin: EdgeInsets.all(3),
-                              elevation: 0,
-                              color: Color.fromARGB(255, 51, 85, 206),
-                              child: SizedBox(
-                                height: screenWidth * 0.26,
-                                width: screenWidth * 0.27,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      service['icon'],
-                                      size: screenWidth * 0.06,
-                                    ), // Icon size scales with screen width
-                                    SizedBox(height: 8),
-                                    Text(
-                                      service['text'],
-                                      softWrap: true,
-                                      style: GoogleFonts.poppins(
-                                        fontSize: screenWidth * 0.03,
-                                        fontWeight: FontWeight.w400,
-                                        color: Colors.white,
-                                      ),
-                                      textAlign: TextAlign.center,
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  child: Center(
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 12,
+                      runSpacing: 12,
+                      children:
+                          services.map((service) {
+                            return GestureDetector(
+                              onTap:
+                                  () => (Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Longtermbooking(),
                                     ),
-                                  ],
+                                  )),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(19),
+                                  ),
+                                  border: Border.all(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      72,
+                                      97,
+                                      129,
+                                    ),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Card(
+                                  margin: EdgeInsets.all(3),
+                                  elevation: 0,
+                                  color: Color.fromARGB(255, 51, 85, 206),
+                                  child: SizedBox(
+                                    height: screenWidth * 0.26,
+                                    width: screenWidth * 0.27,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          service['icon'],
+                                          size: screenWidth * 0.06,
+                                        ),
+                                        SizedBox(height: 8),
+                                        Text(
+                                          service['text'],
+                                          softWrap: true,
+                                          style: GoogleFonts.poppins(
+                                            fontSize: screenWidth * 0.03,
+                                            fontWeight: FontWeight.w400,
+                                            color: Colors.white,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
+                            );
+                          }).toList(),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 9.0, vertical: 6),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            AnimatedSlide(
-              offset: button ? Offset(0, 0) : Offset(0, 1),
-              duration: Duration(milliseconds: 350),
-              curve: Curves.easeIn,
-              child: AnimatedOpacity(
-                opacity: button ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 350),
-                child: TextButton(
-                  onPressed: () {
-                    navigateWithSlideUp(context, Patient());
-                  },
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                    minimumSize: Size(double.infinity, 30),
-                    backgroundColor: const Color.fromARGB(255, 4, 139, 163),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (button)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {
+                  navigateWithSlideUp(context, Patient());
+                },
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9),
                   ),
-                  child: Text(
-                    "Continue",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
+                  minimumSize: Size(double.infinity, 30),
+                  backgroundColor: const Color.fromARGB(255, 4, 139, 163),
+                ),
+                child: Text(
+                  "Continue",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+        ],
       ),
     );
   }

@@ -46,10 +46,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Color(0xffF8FAFC),
-        scaffoldBackgroundColor: Color.fromARGB(255, 247, 251, 255),
+        scaffoldBackgroundColor: Color(0xffF8FAFC),
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xffF8FAFC),
-          elevation: 0, // Optional: removes shadow for a flat look
+          elevation: 0,
           iconTheme: IconThemeData(color: Colors.black), // Optional: icon color
           titleTextStyle: TextStyle(
             color: Colors.black,
@@ -59,11 +59,11 @@ class MyApp extends StatelessWidget {
         ),
         colorScheme: ColorScheme.light(
           primary: Color(0xff1AB5BF),
-          secondary: Color(0xff1A2C42),
-          surface: Color(0xffFFFFFF),
-          onPrimary: Colors.white, // Text/icon color on primary
-          onSecondary: Colors.white,
-          onSurface: Colors.black,
+          secondary: Color.fromARGB(255, 255, 255, 255),
+          surface: Color(0xffF8FAFC),
+          onPrimary: Color(0xff94A3B8), // Text/icon color on primary
+          onSecondary: Color(0xff475569),
+          onSurface: Color(0xff0F172A),
         ),
       ),
       home: const MyHomePage(title: 'Nurse mate  '),
@@ -213,8 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     "Bookings",
                     style: TextStyle(
-                      color:
-                          currentpage == 1 ? Colors.cyan : Color(0xff333333),
+                      color: currentpage == 1 ? Colors.cyan : Color(0xff333333),
                       fontSize: 12,
                     ),
                   ),
@@ -239,8 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text(
                     "Profile",
                     style: TextStyle(
-                      color:
-                          currentpage == 2 ? Colors.cyan : Color(0xff333333),
+                      color: currentpage == 2 ? Colors.cyan : Color(0xff333333),
                       fontSize: 12,
                     ),
                   ),

@@ -22,18 +22,20 @@ class _BannerCarouselState extends State<BannerCarousel> {
                 return Builder(
                   builder: (BuildContext context) {
                     return Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(12.0),
                       child: Container(
-
                         decoration: BoxDecoration(
                           color: Colors.white,
 
                           borderRadius: BorderRadius.circular(15),
-                          boxShadow: [BoxShadow(color: Colors.black12,blurStyle: BlurStyle.solid),BoxShadow(
-                            color: Colors.black12,
-                            blurRadius: 23,
-                            offset: Offset(2, 1),
-                            spreadRadius: -20,)],
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromARGB(31, 81, 81, 81),
+                              blurRadius: 9,
+                              offset: Offset(1, 3),
+                              spreadRadius: 0.58,
+                            ),
+                          ],
                         ),
                         child: Image.asset(
                           imagePath,

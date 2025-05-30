@@ -88,97 +88,104 @@ class _InstantbookingState extends State<Instantbooking> {
     if (isloading) {
       return Center(child: CircularProgressIndicator());
     }
-    return Column(
-      children: [
-        SizedBox(
-          height: screenWidth * 0.28, // Height to fit the card
-          child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children:
-                  services.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    String service = entry.value;
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          child: Wrap(
+            spacing: 4,
+            runSpacing: 10,
+            children:
+                services.asMap().entries.map((entry) {
+                  int index = entry.key;
+                  String service = entry.value;
 
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          isSelectedList[index] = !isSelectedList[index];
-                          final selectedItems = [
-                            for (int i = 0; i < services.length; i++)
-                              if (isSelectedList[i]) services[i],
-                          ];
-                          widget.onItemsSelected(selectedItems);
-                        });
-                      },
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8.0),
-                        height: screenWidth * 0.21,
-                        width: screenWidth * 0.29,
-                        child: AnimatedContainer(
-                          duration: Duration(
-                            milliseconds: 190,
-                          ), // Animation duration
-                          curve: Curves.easeIn, // Optional: animation curve
-                          decoration: BoxDecoration(
-                            color:
-                                isSelectedList[index]
-                                    ? Colors.cyan.withOpacity(0.2)
-                                    : Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                            border: Border.all(
-                              color:
-                                  isSelectedList[index]
-                                      ? Colors.blue
-                                      : const Color.fromARGB(
-                                        255,
-                                        148,
-                                        145,
-                                        145,
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isSelectedList[index] = !isSelectedList[index];
+                        final selectedItems = [
+                          for (int i = 0; i < services.length; i++)
+                            if (isSelectedList[i]) services[i],
+                        ];
+                        widget.onItemsSelected(selectedItems);
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(
+                        horizontal: 8.0,
+                        vertical: 2,
+                      ),
+                      height: screenWidth * 0.24,
+                      width: screenWidth * 0.24,
+                      child: AnimatedContainer(
+                        duration: Duration(
+                          milliseconds: 190,
+                        ), // Animation duration
+                        curve: Curves.easeIn, // Optional: animation curve
+                        decoration: BoxDecoration(
+                          color:
+                              isSelectedList[index]
+                                  ? Colors.cyan.withOpacity(0.2)
+                                  : Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                          border:
+                              isSelectedList[index]
+                                  ? Border.all(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      0,
+                                      96,
+                                      105,
+                                    ),
+                                    width: 0.8,
+                                  )
+                                  : null,
+                          boxShadow:
+                              isSelectedList[index]
+                                  ? []
+                                  : [
+                                    BoxShadow(
+                                      color: const Color.fromARGB(
+                                        31,
+                                        61,
+                                        61,
+                                        61,
                                       ),
-                              width: 0.1,
-                            ),
-                            boxShadow:
-                                isSelectedList[index]
-                                    ? []
-                                    : [
-                                      BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 12,
-                                        offset: Offset(3, 4),
-                                        spreadRadius: -1,
-                                      ),
-                                    ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Icon(Icons.medical_services_outlined),
-                              Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Text(
-                                  service,
-                                  style: TextStyle(
-                                    fontSize: 9,
-                                    fontWeight: FontWeight.w500,
-                                    color:
-                                        isSelectedList[index]
-                                            ? Colors.blue
-                                            : Colors.black,
-                                  ),
-                                  textAlign: TextAlign.center,
+                                      blurRadius: 13,
+                                      spreadRadius: 0.9,
+                                      offset: Offset(1, 2),
+                                    ),
+                                  ],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Icon(Icons.medical_services_outlined),
+                            Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Text(
+                                service,
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      isSelectedList[index]
+                                          ? Colors.blue
+                                          : Colors.black,
                                 ),
+                                textAlign: TextAlign.center,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
-                    );
-                  }).toList(),
-            ),
+                    ),
+                  );
+                }).toList(),
           ),
         ),
-      ],
+      ),
     );
   }
 }
