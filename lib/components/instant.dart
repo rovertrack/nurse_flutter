@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,13 +17,33 @@ Future<List<String>> fetchfromserver() async {
     Uri.parse("http://159.89.164.129:8000/api/services"),
   );
   if (response.statusCode == 200) {
-    final List<dynamic> data = json.decode(response.body);
-    final List<String> serviceNames =
-        data.map((item) => item['service_name'] as String).toList();
-    await box.put('services', serviceNames);
-    return serviceNames;
+    try {
+      final List<dynamic> data = json.decode(response.body);
+      final List<String> serviceNames =
+          data.map((item) => item['service_name'] as String).toList();
+      await box.put('services', serviceNames);
+      return serviceNames;
+    } catch (e) {
+      // If JSON is invalid, fall back to cache if available
+      List<String>? cached = box.get('services')?.cast<String>();
+      if (cached != null && cached.isNotEmpty) {
+        return cached;
+      } else {
+        throw Exception(
+          'Invalid data from server and no cache available: ' + e.toString(),
+        );
+      }
+    }
   } else {
-    throw Exception('Failed to load services');
+    // If server can't be reached or returns error, fall back to cache if available
+    List<String>? cached = box.get('services')?.cast<String>();
+    if (cached != null && cached.isNotEmpty) {
+      return cached;
+    } else {
+      throw Exception(
+        'Failed to load services and no cache available: ${response.statusCode}',
+      );
+    }
   }
 }
 
@@ -148,9 +169,9 @@ class _InstantbookingState extends State<Instantbooking> {
                                     BoxShadow(
                                       color: const Color.fromARGB(
                                         31,
-                                        61,
-                                        61,
-                                        61,
+                                        74,
+                                        74,
+                                        74,
                                       ),
                                       blurRadius: 13,
                                       spreadRadius: 0.9,
@@ -161,13 +182,16 @@ class _InstantbookingState extends State<Instantbooking> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Icon(Icons.medical_services_outlined),
+                            Icon(
+                              Icons.medical_services_outlined,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: Text(
                                 service,
-                                style: TextStyle(
-                                  fontSize: 9,
+                                style: GoogleFonts.poppins(
+                                  fontSize: 9.5,
                                   fontWeight: FontWeight.w500,
                                   color:
                                       isSelectedList[index]

@@ -30,10 +30,10 @@ class _BannerCarouselState extends State<BannerCarousel> {
                           borderRadius: BorderRadius.circular(15),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color.fromARGB(31, 81, 81, 81),
-                              blurRadius: 9,
-                              offset: Offset(1, 3),
-                              spreadRadius: 0.58,
+                              color: const Color.fromARGB(31, 116, 116, 116),
+                              blurRadius: 6,
+                              offset: Offset(0, 2),
+                              spreadRadius: 0.35,
                             ),
                           ],
                         ),

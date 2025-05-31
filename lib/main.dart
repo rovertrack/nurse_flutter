@@ -11,7 +11,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(systemNavigationBarColor: Colors.white),
   );
@@ -50,18 +49,29 @@ class MyApp extends StatelessWidget {
         appBarTheme: AppBarTheme(
           backgroundColor: Color(0xffF8FAFC),
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.black), // Optional: icon color
+          iconTheme: IconThemeData(color: Colors.black),
           titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.black, // Set default app bar title text color
             fontSize: 20,
             fontWeight: FontWeight.w600,
           ),
+          toolbarTextStyle: TextStyle(
+            color: Colors.black, // Set default app bar toolbar text color
+          ),
+        ),
+        textTheme: ThemeData.light().textTheme.copyWith(
+          bodyLarge: TextStyle(color: Color(0xff0F172A)),
+          bodyMedium: TextStyle(color: Color(0xff0F172A)),
+          bodySmall: TextStyle(color: Color(0xff475569)),
+          titleLarge: TextStyle(color: Color(0xff0F172A)),
+          titleMedium: TextStyle(color: Color(0xff0F172A)),
+          titleSmall: TextStyle(color: Color(0xff475569)),
         ),
         colorScheme: ColorScheme.light(
-          primary: Color(0xff1AB5BF),
+          primary: Color.fromARGB(255, 255, 255, 255),
           secondary: Color.fromARGB(255, 255, 255, 255),
           surface: Color(0xffF8FAFC),
-          onPrimary: Color(0xff94A3B8), // Text/icon color on primary
+          onPrimary: Color(0xff1AB5BF), // Text/icon color on primary
           onSecondary: Color(0xff475569),
           onSurface: Color(0xff0F172A),
         ),
@@ -155,7 +165,7 @@ class _MyHomePageState extends State<MyHomePage> {
         padding: EdgeInsets.fromLTRB(5, 0, 5, 8),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Color.fromARGB(255, 253, 253, 253),
           boxShadow: [
             BoxShadow(color: Colors.black12, blurRadius: 2, spreadRadius: 1),
           ],
@@ -179,7 +189,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     height: 23,
                     color:
                         currentpage == 0
-                            ? Color(0xff3E69FE)
+                            ? Theme.of(context).colorScheme.onPrimary
                             : const Color.fromARGB(188, 79, 79, 79),
                   ),
                   Text(
@@ -187,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     style: TextStyle(
                       color:
                           currentpage == 0
-                              ? Color(0xff3E69FE)
+                              ? Theme.of(context).colorScheme.onPrimary
                               : const Color.fromARGB(188, 79, 79, 79),
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -208,12 +218,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icon(
                     Icons.watch_later_outlined,
                     size: 25,
-                    color: currentpage == 1 ? Colors.cyan : Color(0xff333333),
+                    color:
+                        currentpage == 1
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : const Color.fromARGB(188, 79, 79, 79),
                   ),
                   Text(
                     "Bookings",
                     style: TextStyle(
-                      color: currentpage == 1 ? Colors.cyan : Color(0xff333333),
+                      color:
+                          currentpage == 1
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : const Color.fromARGB(188, 79, 79, 79),
                       fontSize: 12,
                     ),
                   ),
@@ -233,12 +249,18 @@ class _MyHomePageState extends State<MyHomePage> {
                   Icon(
                     Icons.person,
                     size: 25,
-                    color: currentpage == 2 ? Colors.cyan : Color(0xff333333),
+                    color:
+                        currentpage == 2
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : const Color.fromARGB(188, 79, 79, 79),
                   ),
                   Text(
                     "Profile",
                     style: TextStyle(
-                      color: currentpage == 2 ? Colors.cyan : Color(0xff333333),
+                      color:
+                          currentpage == 2
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : const Color.fromARGB(188, 79, 79, 79),
                       fontSize: 12,
                     ),
                   ),

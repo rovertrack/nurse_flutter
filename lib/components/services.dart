@@ -43,7 +43,6 @@ class _ServicesState extends State<Services> {
     ];
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         centerTitle: true,
         // bottom: PreferredSize(
         //   preferredSize: Size.fromHeight(1.0),
@@ -179,7 +178,7 @@ class _ServicesState extends State<Services> {
         children: [
           if (button)
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(4.0),
               child: TextButton(
                 onPressed: () {
                   navigateWithSlideUp(context, Patient());
