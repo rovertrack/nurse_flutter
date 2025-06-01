@@ -16,7 +16,7 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(title: Text("Profile"), centerTitle: false),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.all(15.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

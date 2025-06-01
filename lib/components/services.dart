@@ -7,6 +7,7 @@ import 'package:first/pages/services/longtermbooking.dart';
 import 'package:first/pages/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Services extends StatefulWidget {
   const Services({super.key});
@@ -16,6 +17,8 @@ class Services extends StatefulWidget {
 
 class _ServicesState extends State<Services> {
   bool button = false;
+  List<String> selectedItem = [];
+  bool _isAnimating = false; // New state variable for animation
 
   // Use this function to navigate to the next page with a bottom-to-top transition
   void navigateWithSlideUp(BuildContext context, Widget nextPage) {
@@ -96,6 +99,7 @@ class _ServicesState extends State<Services> {
                   onItemsSelected: (List<String> selectedItems) {
                     setState(() {
                       button = selectedItems.isNotEmpty;
+                      selectedItem = selectedItems;
                     });
                   },
                 ),
@@ -173,33 +177,93 @@ class _ServicesState extends State<Services> {
           ),
         ),
       ),
-      bottomNavigationBar: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (button)
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: TextButton(
-                onPressed: () {
-                  navigateWithSlideUp(context, Patient());
-                },
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                  minimumSize: Size(double.infinity, 30),
-                  backgroundColor: const Color.fromARGB(255, 4, 139, 163),
+      bottomNavigationBar: Visibility(
+        visible:
+            button || _isAnimating, // _isAnimating is true while animating out
+        maintainState: true,
+        maintainAnimation: true,
+        maintainSize: false, // Don't keep space when hidden
+        child: AnimatedSlide(
+          offset: button ? Offset(0, 0) : Offset(0, 1),
+          duration:
+              button ? Duration(milliseconds: 300) : Duration(milliseconds: 50),
+          curve: Curves.easeInOut,
+          onEnd: () {
+            setState(() {
+              _isAnimating = button; // Only keep visible if button is true
+            });
+          },
+          child: AnimatedOpacity(
+            opacity: button ? 1.0 : 0.0,
+            duration:
+                button
+                    ? Duration(milliseconds: 400)
+                    : Duration(milliseconds: 50),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border(top: BorderSide(color: Colors.grey, width: 0.3)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10,
                 ),
-                child: Text(
-                  "Continue",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Row(
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "${selectedItem.length} services selected",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        Text(
+                          '1299',
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Spacer(),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: TextButton(
+                        onPressed: () {
+                          navigateWithSlideUp(context, Patient());
+                        },
+                        style: TextButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          minimumSize: Size(0, 40),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        child: Text(
+                          "Continue",
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-        ],
+          ),
+        ),
       ),
     );
   }
