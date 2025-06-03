@@ -1,5 +1,8 @@
+// import 'dart:ffi'; // Removed to avoid 'Size' name conflict
+
 import 'package:first/pages/checkout.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Patient extends StatefulWidget {
   const Patient({super.key});
@@ -23,13 +26,14 @@ class PatientState extends State<Patient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
-          "Patient Info",
-          style: TextStyle(fontWeight: FontWeight.w500),
+          "Patient Information",
+          style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18),
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.all(15),
         child: Column(
           children: [
             Expanded(
@@ -39,24 +43,22 @@ class PatientState extends State<Patient> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  border: Border.all(color: Colors.grey, width: 0.3),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 205, 205, 205),
+                      blurRadius: 5,
+                      spreadRadius: 0.01,
+                    ),
+                  ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(14.0),
+                  padding: const EdgeInsets.all(15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Patient Information",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Text(
                         "First Name",
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w400),
                       ),
                       SizedBox(
                         height: 40,
@@ -71,16 +73,17 @@ class PatientState extends State<Patient> {
                             focusColor: const Color.fromARGB(255, 19, 140, 161),
                             border: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.grey[400] ?? Colors.grey,
+                                color: Colors.grey[300] ?? Colors.grey,
                                 width: 0.5, // Thin border
                               ),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.grey[500] ?? Colors.grey,
+                                color: Colors.grey[300] ?? Colors.grey,
                                 width: 0.5, // Thin border
                               ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -95,7 +98,7 @@ class PatientState extends State<Patient> {
                       SizedBox(height: 10),
                       Text(
                         "Last Name",
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w400),
                       ),
                       SizedBox(
                         height: 40,
@@ -107,13 +110,26 @@ class PatientState extends State<Patient> {
                             ),
                             focusColor: const Color.fromARGB(255, 4, 139, 163),
                             border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.grey[300] ?? Colors.grey,
+                                width: 0.5, // Thin border
+                              ),
+
                               borderRadius: BorderRadius.circular(10),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.grey[500] ?? Colors.grey,
+                                color: Colors.grey[300] ?? Colors.grey,
                                 width: 0.5, // Thin border
                               ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.cyan, // Border color when focused
+                                width: 1.0,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
@@ -121,30 +137,87 @@ class PatientState extends State<Patient> {
                       SizedBox(height: 16),
                       Text(
                         "Gender",
-                        style: TextStyle(fontWeight: FontWeight.w500),
+                        style: GoogleFonts.poppins(fontWeight: FontWeight.w400),
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Radio<String>(
-                            value: 'Male',
-                            groupValue: _selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value;
-                              });
-                            },
+                          TextButton(
+                            style: ButtonStyle(
+                              minimumSize: WidgetStatePropertyAll(
+                                Size(150, 45),
+                              ),
+
+                              backgroundColor: WidgetStatePropertyAll(
+                                _selectedGender == "Male"
+                                    ? Colors.cyan
+                                    : Colors.transparent,
+                              ),
+                              foregroundColor: WidgetStatePropertyAll(
+                                _selectedGender == "Male"
+                                    ? Colors.white
+                                    : Colors.cyan,
+                              ),
+                              shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.cyan,
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+
+                            onPressed:
+                                () => setState(() {
+                                  _selectedGender = "Male";
+                                }),
+                            child: Text(
+                              "Male",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                          Text('Male'),
-                          Radio<String>(
-                            value: 'Female',
-                            groupValue: _selectedGender,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedGender = value;
-                              });
-                            },
+                          SizedBox(width: 10),
+                          TextButton(
+                            style: ButtonStyle(
+                              minimumSize: WidgetStatePropertyAll(
+                                Size(150, 45),
+                              ),
+                              backgroundColor: WidgetStatePropertyAll(
+                                _selectedGender == "Female"
+                                    ? Colors.cyan
+                                    : Colors.transparent,
+                              ),
+                              foregroundColor: WidgetStatePropertyAll(
+                                _selectedGender == "Female"
+                                    ? Colors.white
+                                    : Colors.cyan,
+                              ),
+                              shape: WidgetStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: Colors.cyan,
+                                    width: 1.5,
+                                  ),
+
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                            ),
+                            onPressed:
+                                () => setState(() {
+                                  _selectedGender = "Female";
+                                }),
+                            child: Text(
+                              "Female",
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                          Text('Female'),
                         ],
                       ),
                       SizedBox(height: 16),
