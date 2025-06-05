@@ -1,4 +1,6 @@
 import 'package:first/Routes/longterm/schedule.dart';
+import 'package:first/Routes/schedule.dart';
+import 'package:first/pages/checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -75,12 +77,12 @@ class Longtermbooking extends StatelessWidget {
                       padding: const EdgeInsets.all(20.0),
                       child: GestureDetector(
                         onTap:
-                            () => (
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) =>),
-                              // )
-                            ),
+                            () => (Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Schedule(),
+                              ),
+                            )),
                         child: Row(
                           spacing: 16,
                           crossAxisAlignment: CrossAxisAlignment.start,
