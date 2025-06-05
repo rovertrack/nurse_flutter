@@ -14,15 +14,11 @@ class _Checkout extends State<Checkout> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
         centerTitle: true,
         backgroundColor: Colors.white,
         title: Text(
           "Booking Summary",
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600),
         ),
       ),
       body: SingleChildScrollView(
@@ -63,11 +59,13 @@ class _Checkout extends State<Checkout> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                boxShadow: [BoxShadow(
-          color: Colors.grey.shade200,
-          blurRadius: 5.5,
-          spreadRadius: 0.02
-                )],
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.shade200,
+                      blurRadius: 5.5,
+                      spreadRadius: 0.02,
+                    ),
+                  ],
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 child: Padding(
@@ -99,7 +97,7 @@ class _Checkout extends State<Checkout> {
                                   Icon(Icons.check, color: Colors.cyan[200]),
                                   SizedBox(
                                     width: 10,
-                                  ), // Space between check and Iv
+                                  ),
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -111,17 +109,21 @@ class _Checkout extends State<Checkout> {
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-
                                       Row(
                                         children: [
-                                          Icon(Icons.timer_outlined,size: 15,color: Colors.grey,weight: 30,),
-                                          SizedBox(width: 2,),
+                                          Icon(
+                                            Icons.timer_outlined,
+                                            size: 15,
+                                            color: Colors.grey,
+                                            weight: 30,
+                                          ),
+                                          SizedBox(width: 2),
                                           Text(
                                             "Duration :  45 minutes",
                                             style: GoogleFonts.poppins(
                                               color: Colors.grey[400],
                                               fontSize: 12,
-                                              fontWeight: FontWeight.w500
+                                              fontWeight: FontWeight.w500,
                                             ),
                                           ),
                                         ],
@@ -152,15 +154,16 @@ class _Checkout extends State<Checkout> {
                                       fontWeight: FontWeight.w500,
                                       fontSize: 13,
                                       color: Colors.grey[700],
-
-
                                     ),
                                   ),
                                   Spacer(),
-                                  Text("45 minutes",style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 13
-                                  ),),
+                                  Text(
+                                    "45 minutes",
+                                    style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 13,
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
@@ -171,8 +174,7 @@ class _Checkout extends State<Checkout> {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Colors.grey.shade50
-
+                          color: Colors.grey.shade50,
                         ),
                         child: Padding(
                           padding: const EdgeInsets.all(15.0),
@@ -182,7 +184,6 @@ class _Checkout extends State<Checkout> {
                               Text(
                                 "Instructions for  the  Nurse(optional)",
                                 style: GoogleFonts.poppins(
-
                                   fontWeight: FontWeight.w600,
                                   fontSize: 13,
                                 ),
@@ -199,12 +200,13 @@ class _Checkout extends State<Checkout> {
                                       vertical: 10,
                                     ),
                                     hintStyle: GoogleFonts.poppins(
-                fontSize: 13,
+                                      fontSize: 13,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey[500],
                                     ),
 
-                                    hintText: "Enter special instruction for the nurse",
+                                    hintText:
+                                        "Enter special instruction for the nurse",
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(15),
                                     ),
@@ -213,7 +215,7 @@ class _Checkout extends State<Checkout> {
                                         color: Colors.grey[300] ?? Colors.grey,
                                         width: 0.5, // Thin border
                                       ),
-                                      borderRadius: BorderRadius.circular(10)
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
                                 ),
@@ -222,7 +224,6 @@ class _Checkout extends State<Checkout> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -232,10 +233,7 @@ class _Checkout extends State<Checkout> {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  border: Border.all(
-                    color: Colors.grey.shade200,
-                    width: 0.8,
-                  ),
+                  border: Border.all(color: Colors.grey.shade200, width: 0.8),
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                 ),
                 width: double.infinity,
@@ -319,7 +317,7 @@ class _Checkout extends State<Checkout> {
                                 "Payment will be collected after service completion",
                                 style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w500,
-fontSize: 13,
+                                  fontSize: 13,
                                   color: Colors.grey.shade600,
                                 ),
                               ),
@@ -335,11 +333,17 @@ fontSize: 13,
           ),
         ),
       ),
-      bottomNavigationBar:  Container(
+      bottomNavigationBar: Container(
         width: double.infinity,
-        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(20),border:Border.fromBorderSide(BorderSide(color: Colors.grey.shade200,width: 0.5))),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.fromBorderSide(
+            BorderSide(color: Colors.grey.shade200, width: 0.5),
+          ),
+        ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25,vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.25,
             child: TextButton(
@@ -367,7 +371,7 @@ fontSize: 13,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  Icon(Icons.navigate_next_outlined)
+                  Icon(Icons.navigate_next_outlined),
                 ],
               ),
             ),
