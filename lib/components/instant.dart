@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:fquery/src/observer.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:fquery/fquery.dart';
 
 Future<List<String>> fetchfromserver() async {
   Box? box;
@@ -35,7 +37,6 @@ Future<List<String>> fetchfromserver() async {
       }
     }
   } else {
-    // If server can't be reached or returns error, fall back to cache if available
     List<String>? cached = box.get('services')?.cast<String>();
     if (cached != null && cached.isNotEmpty) {
       return cached;
@@ -47,7 +48,7 @@ Future<List<String>> fetchfromserver() async {
   }
 }
 
-Future<List<dynamic>> loadServices() async {
+Future<List<String>> loadServices() async {
   Box? box;
   try {
     box = await Hive.openBox('appcache');
@@ -67,6 +68,8 @@ Future<List<dynamic>> loadServices() async {
   }
 }
 
+final servicesQueryFn = () => loadServices();
+
 class Instantbooking extends StatefulWidget {
   const Instantbooking({super.key, required this.onItemsSelected});
   final Function(List<String>) onItemsSelected;
@@ -76,140 +79,170 @@ class Instantbooking extends StatefulWidget {
 }
 
 class _InstantbookingState extends State<Instantbooking> {
-  bool isloading = true;
-  List<String> services = [];
-  //  = [
-  //   "Injection administration (IM/IV)",
-  //   "Wound dressing",
-  //   "IV/Drip setup",
-  //   "Nebulization",
-  //   "Catheter insertion/removal",
-  //   "Vital signs check",
-  //   "Emergency first aid (with SOS)",
-  // ];
-
-  // Track selection state for each service
   List<bool> isSelectedList = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadServices().then((loaded) {
-      setState(() {
-        services = loaded as List<String>;
-        isSelectedList = List<bool>.filled(services.length, false);
-        isloading = false;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    if (isloading) {
-      return Center(child: CircularProgressIndicator());
-    }
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          child: Wrap(
-            spacing: 4,
-            runSpacing: 10,
-            children:
-                services.asMap().entries.map((entry) {
-                  int index = entry.key;
-                  String service = entry.value;
-
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isSelectedList[index] = !isSelectedList[index];
-                        final selectedItems = [
-                          for (int i = 0; i < services.length; i++)
-                            if (isSelectedList[i]) services[i],
-                        ];
-                        widget.onItemsSelected(selectedItems);
-                      });
-                    },
-                    child: Container(
-                      margin: EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 2,
-                      ),
-                      height: screenWidth * 0.24,
-                      width: screenWidth * 0.24,
-                      child: AnimatedContainer(
-                        duration: Duration(
-                          milliseconds: 190,
-                        ), // Animation duration
-                        curve: Curves.easeIn, // Optional: animation curve
-                        decoration: BoxDecoration(
-                          color:
-                              isSelectedList[index]
-                                  ? Colors.cyan.withOpacity(0.2)
-                                  : Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                          border:
-                              isSelectedList[index]
-                                  ? Border.all(
-                                    color: const Color.fromARGB(
-                                      255,
-                                      0,
-                                      96,
-                                      105,
+    return QueryBuilder<List<String>, Object>(
+      const ['services'],
+      staleDuration: Duration(minutes: 1),
+      refetchInterval: Duration(seconds: 10),
+      servicesQueryFn,
+      builder: (context, state) {
+        if (state.isLoading) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (state.error != null) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.error, color: Colors.red),
+                SizedBox(height: 8),
+                Text(
+                  'Failed to load services',
+                  style: TextStyle(color: Colors.red),
+                ),
+                Text(state.error.toString(), style: TextStyle(fontSize: 12)),
+                SizedBox(height: 8),
+                ElevatedButton(onPressed: state.refetch, child: Text('Retry')),
+              ],
+            ),
+          );
+        }
+        final services = state.data ?? [];
+        if (isSelectedList.length != services.length) {
+          isSelectedList = List<bool>.filled(services.length, false);
+        }
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SizedBox(
+              child: Wrap(
+                spacing: 4,
+                runSpacing: 10,
+                children:
+                    services.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      String service = entry.value;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isSelectedList[index] = !isSelectedList[index];
+                            final selectedItems = [
+                              for (int i = 0; i < services.length; i++)
+                                if (isSelectedList[i]) services[i],
+                            ];
+                            widget.onItemsSelected(selectedItems);
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 2,
+                          ),
+                          height: screenWidth * 0.24,
+                          width: screenWidth * 0.24,
+                          child: AnimatedContainer(
+                            duration: Duration(milliseconds: 190),
+                            curve: Curves.easeIn,
+                            decoration: BoxDecoration(
+                              color:
+                                  isSelectedList[index]
+                                      ? Colors.cyan.withOpacity(0.2)
+                                      : Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15),
+                              ),
+                              border:
+                                  isSelectedList[index]
+                                      ? Border.all(
+                                        color: const Color.fromARGB(
+                                          255,
+                                          0,
+                                          96,
+                                          105,
+                                        ),
+                                        width: 0.8,
+                                      )
+                                      : null,
+                              boxShadow:
+                                  isSelectedList[index]
+                                      ? []
+                                      : [
+                                        BoxShadow(
+                                          color: const Color.fromARGB(
+                                            31,
+                                            74,
+                                            74,
+                                            74,
+                                          ),
+                                          blurRadius: 11,
+                                          spreadRadius: 0.7,
+                                          offset: Offset(1, 2),
+                                        ),
+                                      ],
+                            ),
+                            child: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Icon(
+                                      Icons.medical_services_outlined,
+                                      color:
+                                          Theme.of(
+                                            context,
+                                          ).colorScheme.onPrimary,
                                     ),
-                                    width: 0.8,
-                                  )
-                                  : null,
-                          boxShadow:
-                              isSelectedList[index]
-                                  ? []
-                                  : [
-                                    BoxShadow(
-                                      color: const Color.fromARGB(
-                                        31,
-                                        74,
-                                        74,
-                                        74,
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        service + "           ",
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 9.5,
+                                          fontWeight: FontWeight.w500,
+                                          color:
+                                              isSelectedList[index]
+                                                  ? Colors.blue
+                                                  : Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
                                       ),
-                                      blurRadius: 13,
-                                      spreadRadius: 0.9,
-                                      offset: Offset(1, 2),
                                     ),
                                   ],
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.medical_services_outlined,
-                              color: Theme.of(context).colorScheme.onPrimary,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Text(
-                                service,
-                                style: GoogleFonts.poppins(
-                                  fontSize: 9.5,
-                                  fontWeight: FontWeight.w500,
-                                  color:
-                                      isSelectedList[index]
-                                          ? Colors.blue
-                                          : Colors.black,
                                 ),
-                                textAlign: TextAlign.center,
-                              ),
+                                Positioned(
+                                  top: -2, // <-- try adjusting this for overlap
+                                  right: -0.1,
+                                  child: Container(
+                                    padding: EdgeInsets.all(2),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 1,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Icon(Icons.add_outlined, size: 16),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                }).toList(),
+                      );
+                    }).toList(),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

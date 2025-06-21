@@ -14,6 +14,10 @@ class Patient extends StatefulWidget {
 class PatientState extends State<Patient> {
   DateTime? _selectedDate;
   final TextEditingController _dobController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _medicalHistoryController =
+      TextEditingController();
   String? _selectedGender;
 
   @override
@@ -36,14 +40,13 @@ class PatientState extends State<Patient> {
         child: Padding(
           padding: const EdgeInsets.all(15.0),
           child: Container(
-
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
                   color: const Color.fromARGB(255, 223, 223, 223),
-                  offset:Offset(0, 1.5),
+                  offset: Offset(0, 1.5),
                   blurRadius: 5,
                   spreadRadius: 0.038,
                 ),
@@ -61,6 +64,7 @@ class PatientState extends State<Patient> {
                   SizedBox(
                     height: 40,
                     child: TextField(
+                      controller: _firstNameController,
                       cursorHeight: 18,
                       cursorWidth: 2,
                       decoration: InputDecoration(
@@ -101,6 +105,7 @@ class PatientState extends State<Patient> {
                   SizedBox(
                     height: 40,
                     child: TextFormField(
+                      controller: _lastNameController,
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.symmetric(
                           horizontal: 20,
@@ -112,7 +117,7 @@ class PatientState extends State<Patient> {
                             color: Colors.grey[300] ?? Colors.grey,
                             width: 0.5, // Thin border
                           ),
-        
+
                           borderRadius: BorderRadius.circular(10),
                         ),
                         enabledBorder: OutlineInputBorder(
@@ -142,10 +147,8 @@ class PatientState extends State<Patient> {
                     children: [
                       TextButton(
                         style: ButtonStyle(
-                          minimumSize: WidgetStatePropertyAll(
-                            Size(150, 45),
-                          ),
-        
+                          minimumSize: WidgetStatePropertyAll(Size(150, 45)),
+
                           backgroundColor: WidgetStatePropertyAll(
                             _selectedGender == "Male"
                                 ? Colors.cyan
@@ -158,15 +161,12 @@ class PatientState extends State<Patient> {
                           ),
                           shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.cyan,
-                                width: 1.5,
-                              ),
+                              side: BorderSide(color: Colors.cyan, width: 1.5),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                         ),
-        
+
                         onPressed:
                             () => setState(() {
                               _selectedGender = "Male";
@@ -181,9 +181,7 @@ class PatientState extends State<Patient> {
                       SizedBox(width: 10),
                       TextButton(
                         style: ButtonStyle(
-                          minimumSize: WidgetStatePropertyAll(
-                            Size(150, 45),
-                          ),
+                          minimumSize: WidgetStatePropertyAll(Size(150, 45)),
                           backgroundColor: WidgetStatePropertyAll(
                             _selectedGender == "Female"
                                 ? Colors.cyan
@@ -196,11 +194,8 @@ class PatientState extends State<Patient> {
                           ),
                           shape: WidgetStatePropertyAll(
                             RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: Colors.cyan,
-                                width: 1.5,
-                              ),
-        
+                              side: BorderSide(color: Colors.cyan, width: 1.5),
+
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
@@ -230,9 +225,7 @@ class PatientState extends State<Patient> {
                       controller: _dobController,
                       readOnly: true,
                       decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 20,
-                        ),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         border: OutlineInputBorder(
                           borderSide: BorderSide(
                             color: Colors.cyan,
@@ -240,7 +233,7 @@ class PatientState extends State<Patient> {
                           ),
                           borderRadius: BorderRadius.circular(15),
                         ),
-        
+
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                           borderSide: BorderSide(
@@ -248,11 +241,10 @@ class PatientState extends State<Patient> {
                             width: 1.5, // Thin border
                           ),
                         ),
-        
+
                         hintText: "Select date",
                         hintStyle: GoogleFonts.poppins(
-                          color:
-                              Colors.cyan, // Change to your desired color
+                          color: Colors.cyan, // Change to your desired color
                           fontWeight: FontWeight.w500,
                         ),
                         prefixIcon: Icon(
@@ -263,7 +255,7 @@ class PatientState extends State<Patient> {
                       onTap: () async {
                         DateTime? pickedDate = await showDatePicker(
                           context: context,
-        
+
                           initialDate: _selectedDate ?? DateTime.now(),
                           firstDate: DateTime(1900),
                           lastDate: DateTime.now(),
@@ -298,6 +290,7 @@ class PatientState extends State<Patient> {
                   SizedBox(
                     height: 120, // Adjust height as needed
                     child: TextFormField(
+                      controller: _medicalHistoryController,
                       maxLines: null, // Allows unlimited lines
                       minLines: 4, // Minimum visible lines
                       keyboardType: TextInputType.multiline,
@@ -310,8 +303,7 @@ class PatientState extends State<Patient> {
                           fontWeight: FontWeight.w300,
                           fontSize: 13,
                         ),
-                        hintText:
-                            "Please provide any relevant medical history",
+                        hintText: "Please provide any relevant medical history",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -359,14 +351,11 @@ class PatientState extends State<Patient> {
                       ),
                     ),
                     onPressed: () => (),
-        
+
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.upload_file_outlined,
-                          color: Colors.cyan,
-                        ),
+                        Icon(Icons.upload_file_outlined, color: Colors.cyan),
                         Text(
                           "Upload Documents",
                           style: GoogleFonts.poppins(
@@ -383,11 +372,17 @@ class PatientState extends State<Patient> {
           ),
         ),
       ),
-      bottomNavigationBar:  Container(
+      bottomNavigationBar: Container(
         width: double.infinity,
-        decoration: BoxDecoration(color: Colors.white,borderRadius: BorderRadius.circular(20),border:Border.fromBorderSide(BorderSide(color: Colors.grey.shade200,width: 0.5))),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.fromBorderSide(
+            BorderSide(color: Colors.grey.shade200, width: 0.5),
+          ),
+        ),
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25,vertical: 10),
+          padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
           child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.25,
             child: TextButton(

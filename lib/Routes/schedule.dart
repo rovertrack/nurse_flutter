@@ -151,9 +151,25 @@ class _ScheduleState extends State<Schedule> {
                           builder:
                               (context, child) => Theme(
                                 data: Theme.of(context).copyWith(
+                                  textTheme: TextTheme(
+                                    headlineLarge: GoogleFonts.poppins(),
+                                    bodyLarge: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+
+                                    labelLarge: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  datePickerTheme: DatePickerThemeData(),
                                   textButtonTheme: TextButtonThemeData(
                                     style: TextButton.styleFrom(
-                                      foregroundColor: Colors.cyan,
+                                      foregroundColor: const Color.fromARGB(
+                                        255,
+                                        0,
+                                        130,
+                                        147,
+                                      ),
                                     ),
                                   ),
                                 ),

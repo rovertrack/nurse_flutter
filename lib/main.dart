@@ -7,7 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:fquery/fquery.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+final queryClient = QueryClient(defaultQueryOptions: DefaultQueryOptions());
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,11 +18,14 @@ void main() async {
     SystemUiOverlayStyle(systemNavigationBarColor: Colors.white),
   );
   await Hive.initFlutter();
-
   runApp(
     DevicePreview(
       enabled: !kReleaseMode,
-      builder: (context) => MyApp(), // Wrap your app
+      builder:
+          (context) => QueryClientProvider(
+            queryClient: queryClient,
+            child: MyApp(),
+          ), // Wrap your app
     ),
   );
 }
@@ -59,6 +65,7 @@ class MyApp extends StatelessWidget {
             color: Colors.black, // Set default app bar toolbar text color
           ),
         ),
+
         textTheme: ThemeData.light().textTheme.copyWith(
           bodyLarge: TextStyle(color: Color(0xff0F172A)),
           bodyMedium: TextStyle(color: Color(0xff0F172A)),
